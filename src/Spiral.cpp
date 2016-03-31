@@ -33,8 +33,53 @@ Note : Check the function Parameters ,Its a double pointer .
 
 #include "stdafx.h"
 #include<stdlib.h>
+#include<malloc.h>
+int *spiral_rec(int, int, int **,int,int,int *,int,int);
 
 int *spiral(int rows, int columns, int **input_array)
 {
-	return NULL;
+
+	if (rows <= 0 || columns <= 0)
+		return NULL;
+	if (input_array == NULL)
+		return NULL;
+	int  *arr, total = rows*columns;
+
+	arr = (int*)malloc(total*sizeof(int));
+	int *res= (int *)malloc(total*sizeof(int));
+	if (total == 1)
+		arr[0] = input_array[0][0];
+	else
+	arr = spiral_rec(rows, columns, input_array,0,0,res,0,total);
+	return arr;
+}
+int *spiral_rec(int rows,int columns,int **input_array,int starti,int startj,int *res,int pos,int total)
+{
+	int i, j;
+	if (pos<total)
+	for ( j = startj; j < columns; j++)
+	{
+		res[pos++] = input_array[starti][j];
+	}
+	j = columns - 1;
+	if (pos<total)
+	for ( i = starti + 1; i < rows; i++)
+	{
+		res[pos++] = input_array[i][j];
+	}
+	i =i - 1;
+	if (pos<total)
+	for (j = j - 1; j >= startj; j--)
+	{
+		res[pos++] = input_array[i][j];
+	}
+	 j = j + 1;
+	 if (pos<total)
+	 for (i = i - 1; i > starti; i--)
+	 {
+		 res[pos++] = input_array[i][j];
+	 }
+	 if (pos<total)
+	 spiral_rec(rows-1, columns-1, input_array, starti + 1, startj + 1,res,pos,total);
+	 return res;
 }

@@ -35,8 +35,58 @@ more parameters .
 
 #include<stdlib.h>
 
-
+void path_rec(int *, int, int, int, int, int, int, int **,int *);
 int path_exists(int *maze, int rows, int columns, int x1, int y1, int x2, int y2)
 {
-	return 1;
+	if (maze == NULL)
+		return 0;
+	if (rows <= 0 || columns <= 0 || x1 >= rows || y1 >= columns || x2 >= rows || y2 >= columns || x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0)
+		return 0;
+	int **visited = (int **)calloc(rows*columns, sizeof(int));
+	for (int i = 0; i < rows*columns; i++)
+	{
+		visited[i] = (int *)calloc(rows*columns, sizeof(int));
+	}
+	int c = 0; path_rec(maze, rows, columns, x1, y1, x2, y2, visited,&c);
+	return c;
+	
+}
+void path_rec(int *maze, int rows, int columns, int x1, int y1, int x2, int y2, int **visited,int *c)
+{
+	//x = *((int *)y + a * NUMBER_OF_COLUMNS + b);
+	if (x1 == x2&&y1 == y2){
+		*c = 1;
+	}
+	else
+	{
+		if ((x1 + 1) < rows  && *((maze + (x1 + 1)*columns + y1)) == 1 && visited[x1 + 1][y1] != 1)
+			{
+				visited[x1 ][y1] = 1;
+					path_rec(maze, rows, columns, x1 + 1, y1, x2, y2, visited,c);
+			}
+		
+		else if (y1 + 1 < columns  && *((maze + x1*columns + (y1 + 1))) == 1 && visited[x1][y1 + 1] != 1)
+		{
+			visited[x1][y1] = 1;
+				path_rec(maze, rows, columns, x1 , y1+1, x2, y2, visited,c);
+			}
+		
+		else if ((x1 - 1) < rows && *((maze + (x1 - 1)*columns + y1)) == 1 && visited[x1 - 1][y1] != 1)
+		{
+				visited[x1][y1] = 1;
+				path_rec(maze, rows, columns, x1 - 1, y1, x2, y2, visited,c);
+			}
+		
+		else if (y1 - 1 < columns  && *((maze + x1*columns + (y1 - 1))) == 1 && visited[x1][y1 - 1] != 1)
+		{
+				visited[x1][y1] = 1;
+				path_rec(maze, rows, columns, x1, y1 - 1, x2, y2, visited,c);
+			}
+		
+		else
+		{
+			*c=0;
+		}
+			
+	}
 }

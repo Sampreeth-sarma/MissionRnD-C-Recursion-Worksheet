@@ -23,8 +23,43 @@
 */
 #include "stdafx.h"
 
-
+int get_steps_rec( int, int);
+int fact(int);
 int get_steps(int s)
 {
-	return 0;
+	 if (s <= 0)
+		return 0;
+	if (s == 1)
+		return 1;
+	if (s >= 2)
+	{
+		int one = s, two = 0;
+		return get_steps_rec( one, two);
+	}
+}
+int get_steps_rec(int one, int two)
+{
+	if (one < 0)
+		return 0;
+	else
+	{
+		int sum = 0;
+		sum = sum + (fact(one + two)) / ((fact(one))*(fact(two))) + get_steps_rec(one - 2, two + 1);
+		return sum;
+	}
+}
+int fact(int num)
+{
+	if (num == 0 || num == 1)
+		return 1;
+	else
+	{
+		int res = 1;
+		for (int i = 2; i <= num; i++)
+		{
+			res = res*i;
+		}
+		return res;
+	}
+	
 }
